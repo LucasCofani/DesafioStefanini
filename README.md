@@ -6,7 +6,7 @@ Possui uma versão com o Front-End em Blazor (DesafioStefanini\Client) e uma ver
 
 Para executar é necessario ter os sequintes requisitos:
 - Dotnet 6.1;
-- Docker com ambiente linux (ou sql server instalado);
+- Docker com suporte a ambiente linux (ou sql server instalado);
 - Nodejs e Angular;
 
 Como executar:
