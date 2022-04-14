@@ -1,0 +1,21 @@
+<div class="col">
+	<div class="mb-3">
+	  <label for="NomeCidade" class="form-label">Nome</label>
+	  <input [(ngModel)]="CidadeNome" disabled="{{Disabled}}" type="text" class="form-control" id="NomeCidade" placeholder="Ex: São Paulo">
+	</div>
+	<div class="mb-3">
+	  <label for="UF" class="form-label">UF</label>
+	  <input [(ngModel)]="CidadeUf" disabled="{{Disabled}}" type="text" class="form-control" id="UF" placeholder="Ex: SP">
+	</div>
+	<div class="mb-3">		
+        <button type="button" class="btn btn-primary" (click)="addCidade()" *ngIf="action=='add'">
+            Adicionar
+		</button>
+        <button type="button" class="btn btn-primary" (click)="updateCidade()" *ngIf="action=='edit'">
+            Atualizar
+		</button>
+		<button type="button" class="btn btn-primary" (click)="deleteCidade()" *ngIf="action=='del'">
+            Deletar
+		</button>
+	</div>
+</div>

@@ -1,0 +1,40 @@
+<table class="table tablw-stripped">
+    <thead>
+        <tr>
+            <td>Cidade</td>
+            <td>UF</td>
+            <td>Ações</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let dataitem of CidadeList">
+            <td>{{dataitem.nome}}</td>
+            <td>{{dataitem.uf}}</td>
+            <td>
+                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#reusableModal" (click)="editClick(dataitem)">Edit</button>
+                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#reusableModal" (click)="deleteClick(dataitem)">Del</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" 
+data-bs-target="#reusableModal" (click)="addClick()">
+Adicionar
+  </button>
+  
+  <div class="modal fade" id="reusableModal" tabindex="-1" aria-labelledby="reusableModal" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{{ModalTitle}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <app-cidade-edit [cid]="cid" [action]="action" [Disabled]="Disabled" *ngIf="enableFields"></app-cidade-edit>
+        </div>
+      </div>
+    </div>
+  </div>

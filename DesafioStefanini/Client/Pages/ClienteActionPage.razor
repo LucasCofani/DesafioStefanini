@@ -1,0 +1,79 @@
+﻿@page "/Cidade/{action}/{Id:int}"
+@inject ICidadeService _service
+@inject NavigationManager _nav
+
+<h1>@BtnText cidade</h1>
+
+<br /><hr /><br />
+<div class="col">
+	<div class="mb-3">
+	  <label for="NomeCidade" class="form-label">Nome</label>
+	  <input disabled="@Disabled" @bind-value="cid.Nome" type="text" class="form-control" id="NomeCidade" placeholder="Ex: São Paulo">
+	</div>
+	<div class="mb-3">
+	  <label for="UF" class="form-label">UF</label>
+	  <input disabled="@Disabled" @bind-value="cid.UF" type="text" class="form-control" id="UF" placeholder="Ex: SP">
+	</div>
+	<div class="mb-3">
+		<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @onclick="Voltar">Voltar</button>
+        <button type="button" class="btn btn-primary" @onclick="Executar">
+			@BtnText
+		</button>
+	</div>
+</div>
+
+@code{
+	[Parameter]
+	public string action { get; set; }
+	[Parameter]
+	public int Id { get; set; }
+
+	public Cidade cid { get; set; } 
+
+	public string BtnText { get; set; }
+
+	public bool Disabled { get; set; }
+
+	protected override async void OnInitialized()
+	{
+		cid = new Cidade();
+
+		Disabled = false;
+
+		if (action == "add"){
+			BtnText = "Adicionar";
+		}else if (action == "edit"){
+			BtnText = "Editar";
+		}else if (action == "del"){
+			BtnText = "Deletar";
+			Disabled = true;
+		}
+
+		if (action != "add"){
+			var res = await _service.GetByIdAsync(Id);
+			cid = res.Info;
+
+		}
+
+		StateHasChanged();
+	}
+	public async Task Executar()
+	{
+		if (action == "add"){
+			var res = await _service.CreateAsync(cid);
+			Console.WriteLine(res);		
+		}else if (action == "edit"){
+			var res = await _service.UpdateAsync(Id,cid);
+			Console.WriteLine(res);
+		}else if (action == "del"){
+			var res = await _service.DeleteAsync(Id);
+			Console.WriteLine(res);
+		}
+		Voltar();
+	}
+	public async Task Voltar()
+	{
+		_nav.NavigateTo("/Cidade");
+	}
+
+}

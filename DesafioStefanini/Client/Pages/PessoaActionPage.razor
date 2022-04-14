@@ -1,0 +1,101 @@
+﻿@page "/Pessoa/{action}/{Id:int}"
+@inject IPessoaService _service
+@inject ICidadeService _servicec
+@inject NavigationManager _nav
+
+<h1>@BtnText cidade</h1>
+
+<br /><hr /><br />
+<div class="col">
+	<div class="mb-3">
+	  <label for="Nome" class="form-label">Nome</label>
+	  <input disabled="@Disabled" @bind-value="pes.Nome" type="text" class="form-control" id="Nome" placeholder="Ex: Ada">
+	</div>
+	<div class="mb-3">
+	  <label for="CPF" class="form-label">CPF</label>
+	  <input disabled="@Disabled" @bind-value="pes.CPF" type="text" class="form-control" id="CPF" placeholder="Ex: 123.456.789.12">
+	</div>
+	<div class="mb-3">
+	  <label for="Idade" class="form-label">Idade</label>
+	  <input disabled="@Disabled" @bind-value="pes.Idade" type="text" class="form-control" id="Idade" placeholder="Ex: 20">
+	</div>
+	<div class="mb-3">
+		<select disabled="@Disabled" id="idCidade" @bind="pes.CidadeId" class="form-control" required>
+			<option>--- Selecione ---</option>
+			@foreach (var item in cid)
+		   {
+			   <option value="@item.Id">@item.Nome</option>
+		   }
+		</select>
+	</div>
+	<div class="mb-3">
+		<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @onclick="Voltar">Voltar</button>
+        <button type="button" class="btn btn-primary" @onclick="Executar">
+			@BtnText
+		</button>
+	</div>
+</div>
+
+@code{
+	[Parameter]
+	public string action { get; set; }
+	[Parameter]
+	public int Id { get; set; }
+
+	public Pessoa pes { get; set; } 
+
+	public List<CidadeDTO> cid { get; set; } 
+
+	public string BtnText { get; set; }
+
+	public bool Disabled { get; set; }
+	public string cidadeId { get; set; }
+
+	protected override async void OnInitialized()
+	{
+		pes = new Pessoa();
+		cid = new List<CidadeDTO>();
+		Disabled = false;
+
+		cid = (await _servicec.GetAllAsync()).Info;
+
+		if (action == "add"){
+			BtnText = "Adicionar";
+		}else if (action == "edit"){
+			BtnText = "Editar";
+		}else if (action == "del"){
+			BtnText = "Deletar";
+			Disabled = true;
+		}
+		if (action != "add"){
+			var res = await _service.GetByIdAsync(Id);
+			pes = res.Info;
+		}
+		StateHasChanged();
+	}
+	public async Task Executar()
+	{
+		if (pes.CidadeId != 0){
+			if (action == "add"){
+				var res = await _service.CreateAsync(pes);
+				Console.WriteLine(res);		
+			}else if (action == "edit"){
+				var res = await _service.UpdateAsync(Id,pes);
+				Console.WriteLine(res);
+			}else if (action == "del"){
+				var res = await _service.DeleteAsync(Id);
+				Console.WriteLine(res);
+			}
+			Voltar();
+		}
+		else
+		{
+			Console.WriteLine("Necessario selecionar um estado!");
+		}
+	}
+	public async Task Voltar()
+	{
+		_nav.NavigateTo("/");
+	}
+
+}

@@ -1,0 +1,31 @@
+<div class="col">
+	<div class="mb-3">
+	  <label for="NomeCidade" class="form-label">Nome</label>
+	  <input [(ngModel)]="PessoaNome" disabled="{{Disabled}}" type="text" class="form-control" id="NomeCidade" placeholder="Ex: São Paulo">
+	</div>
+	<div class="mb-3">
+		<label for="CPF" class="form-label">CPF</label>
+		<input [(ngModel)]="PessoaCPF" disabled="{{Disabled}}" type="text" class="form-control" id="CPF" placeholder="Ex: São Paulo">
+	  </div>
+	<div class="mb-3">
+		<label for="Idade" class="form-label">Idade</label>
+		<input [(ngModel)]="PessoaIdade" disabled="{{Disabled}}" type="text" class="form-control" id="Idade" placeholder="Ex: São Paulo">
+	</div>
+	<div class="mb-3">
+		<label for="idCidade" class="form-label">Cidade</label>
+		<select disabled="{{Disabled}}" id="idCidade" [(ngModel)]="PessoaCidadeId" class="form-control">
+			<option *ngFor="let dataitem of CidadeList" [value]="dataitem.id" [selected]="dataitem.id==PessoaCidadeId"> {{dataitem.nome}} - {{dataitem.uf}}</option>
+		</select>
+	</div>
+	<div class="mb-3">		
+        <button type="button" class="btn btn-primary" (click)="addPessoa()" *ngIf="action=='add'">
+            Adicionar
+		</button>
+        <button type="button" class="btn btn-primary" (click)="updatePessoa()" *ngIf="action=='edit'">
+            Atualizar
+		</button>
+		<button type="button" class="btn btn-primary" (click)="deletePessoa()" *ngIf="action=='del'">
+            Deletar
+		</button>
+	</div>
+</div>
